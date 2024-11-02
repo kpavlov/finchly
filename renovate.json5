@@ -8,7 +8,7 @@
   "packageRules": [
     {
       "matchPackageNames": [
-        "me.kpavlov.project"
+        "me.kpavlov.finchly"
       ],
       "enabled": false
     },

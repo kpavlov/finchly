@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.kpavlov.project</groupId>
+    <groupId>me.kpavlov.finchly</groupId>
     <artifactId>parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Project :: Parent POM</name>
     <description>Parent POM for Project modules</description>
-    <url>https://github.com/kpavlov/awesome-kotlin-maven-template</url>
+    <url>https://github.com/kpavlov/finchly</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,10 +22,12 @@
         <java.compiler.release>${java.version}</java.compiler.release>
         <argLine></argLine>
         <!-- Dependencies -->
+        <assertk.versopn>0.28.1</assertk.versopn>
         <kotlinx.version>1.9.0</kotlinx.version>
         <junit.version>5.11.3</junit.version>
         <awaitility.version>4.2.2</awaitility.version>
         <dotenv-kotlin.version>6.4.2</dotenv-kotlin.version>
+        <wiremock.version>3.9.2</wiremock.version>
     </properties>
 
     <repositories>
@@ -36,6 +38,8 @@
     </repositories>
 
     <build>
+        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -46,7 +50,6 @@
                     <configuration>
                         <args>
                             <arg>-Xjsr305=strict</arg>
-                            <arg>-Werror</arg>
                         </args>
                     </configuration>
                     <executions>
@@ -156,24 +159,38 @@
                 <version>${kotlinx.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>com.willowtreeapps.assertk</groupId>
+                <artifactId>assertk-jvm</artifactId>
+                <version>${assertk.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.willowtreeapps.assertk</groupId>
+                <artifactId>assertk-coroutines-jvm</artifactId>
+                <version>${assertk.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test-junit5</artifactId>
-            <scope>test</scope>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin.version}</version>
         </dependency>
+        <!-- Test Dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
+            <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib</artifactId>
-            <version>${kotlin.version}</version>
+            <groupId>com.willowtreeapps.assertk</groupId>
+            <artifactId>assertk-jvm</artifactId>
+            <version>${assertk.versopn}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
