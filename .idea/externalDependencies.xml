@@ -4,5 +4,6 @@
         <plugin id="org.sonarlint.idea" />
         <plugin id="org.jetbrains.plugins.spotbugs" />
         <plugin id="detekt" />
-    </component>
+    <plugin id="com.nbadal.ktlint"/>
+  </component>
 </project>
