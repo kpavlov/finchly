@@ -36,7 +36,7 @@ class BaseWiremockTest {
     fun `Should mock method`() {
         // given
         mock.shouldSayHello()
-// when
+        // when
         val request =
             HttpRequest
                 .newBuilder()
