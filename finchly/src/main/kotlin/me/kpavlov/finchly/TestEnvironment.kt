@@ -39,6 +39,27 @@ open class AbstractTestEnvironment(
      * @return The value of the environment variable as a String, or null if the variable is not found.
      */
     open operator fun get(name: String): String = dotenv[name]
+
+    /**
+     * Retrieves the value of an environment variable from the .env file, with an optional default.
+     *
+     * This method looks for an environment variable with the specified name. If found, it returns
+     * its value. If not found and a default value is provided, it returns the default value.
+     *
+     * @param name The name of the environment variable to retrieve.
+     * @param defaultValue An optional default value to return if the environment variable is not found.
+     * @return The value of the environment variable, or the default value if provided,
+     * or null if the variable is not found and no default is provided.
+     */
+    open fun get(
+        name: String,
+        defaultValue: String? = null,
+    ): String? =
+        if (defaultValue != null) {
+            dotenv.get(name, defaultValue)
+        } else {
+            dotenv[name]
+        }
 }
 
 object TestEnvironment : AbstractTestEnvironment()

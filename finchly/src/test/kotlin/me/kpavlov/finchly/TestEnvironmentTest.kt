@@ -11,4 +11,9 @@ internal class TestEnvironmentTest {
     fun `Should read env variables`() {
         assertThat(env["HOME"]).isEqualTo(System.getProperty("user.home"))
     }
+
+    @Test
+    fun `Should fallback to provided default value`() {
+        assertThat(env.get("NON_EXISTING", "foo")).isEqualTo("foo")
+    }
 }
