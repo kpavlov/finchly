@@ -19,41 +19,6 @@
         <module>reports</module>
     </modules>
 
-    <reporting>
-        <excludeDefaults>true</excludeDefaults>
-        <plugins>
-            <plugin>
-                <groupId>org.jetbrains.kotlinx</groupId>
-                <artifactId>kover-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </reporting>
-
-    <licenses>
-        <license>
-            <name>MIT License</name>
-            <url>https://opensource.org/license/mit</url>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <name>Konstantin Pavlov</name>
-            <url>https://kpavlov.me</url>
-            <roles>
-                <role>author</role>
-                <role>owner</role>
-            </roles>
-        </developer>
-    </developers>
-
-    <scm>
-        <connection>scm:git:git://github.com/kpavlov/finchly.git</connection>
-        <developerConnection>scm:git:ssh://github.com/kpavlov/finchly.git</developerConnection>
-        <url>https://github.com/kpavlov/finchly/tree/main</url>
-        <tag>HEAD</tag>
-    </scm>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.code.style>official</kotlin.code.style>
@@ -61,16 +26,15 @@
         <kotlin.version>2.0.21</kotlin.version>
         <kotlin.compiler.jvmTarget>${java.version}</kotlin.compiler.jvmTarget>
         <java.compiler.release>${java.version}</java.compiler.release>
-        <argLine></argLine>
         <!-- Dependencies -->
         <assertk.versopn>0.28.1</assertk.versopn>
         <awaitility.version>4.2.2</awaitility.version>
         <dotenv-kotlin.version>6.4.2</dotenv-kotlin.version>
         <junit.version>5.11.3</junit.version>
         <kotlinx.version>1.9.0</kotlinx.version>
+        <mockito.version>5.14.2</mockito.version>
         <slf4j.version>2.0.16</slf4j.version>
         <wiremock.version>3.9.2</wiremock.version>
-        <mockito.version>5.14.2</mockito.version>
     </properties>
 
     <dependencyManagement>
@@ -88,19 +52,23 @@
                 <version>${kotlinx.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.github.cdimascio</groupId>
-                <artifactId>dotenv-kotlin</artifactId>
-                <version>${dotenv-kotlin.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-bom</artifactId>
                 <version>${slf4j.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
-            <!-- Test Dependencies -->
+            <dependency>
+                <groupId>io.github.cdimascio</groupId>
+                <artifactId>dotenv-kotlin</artifactId>
+                <version>${dotenv-kotlin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlinx</groupId>
+                <artifactId>kotlinx-coroutines-test</artifactId>
+                <version>${kotlinx.version}</version>
+                <scope>test</scope>
+            </dependency>
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
@@ -109,39 +77,32 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-bom</artifactId>
-                <version>${mockito.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.jetbrains.kotlinx</groupId>
-                <artifactId>kotlinx-coroutines-test-jvm</artifactId>
-                <version>${kotlinx.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.willowtreeapps.assertk</groupId>
-                <artifactId>assertk-jvm</artifactId>
-                <version>${assertk.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>com.willowtreeapps.assertk</groupId>
                 <artifactId>assertk-coroutines-jvm</artifactId>
-                <version>${assertk.version}</version>
+                <version>0.28.1</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
+            <!--suppress KotlinMavenPluginPhase -->
             <artifactId>kotlin-stdlib</artifactId>
-            <version>${kotlin.version}</version>
         </dependency>
         <!-- Test Dependencies -->
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility-kotlin</artifactId>
+            <version>${awaitility.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test-junit5</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -149,35 +110,27 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.willowtreeapps.assertk</groupId>
-            <artifactId>assertk-jvm</artifactId>
-            <version>${assertk.versopn}</version>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.willowtreeapps.assertk</groupId>
+            <artifactId>assertk-coroutines-jvm</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
-        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.jetbrains.kotlin</groupId>
-                    <artifactId>kotlin-maven-plugin</artifactId>
-                    <version>${kotlin.version}</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <args>
-                            <arg>-Xjsr305=strict</arg>
-                        </args>
-                        <javaParameters>true</javaParameters>
-                    </configuration>
-                </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.5.2</version>
@@ -185,39 +138,6 @@
                 <plugin>
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>3.5.2</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>integration-test</goal>
-                                <goal>verify</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.8.1</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>3.21.0</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.jetbrains.dokka</groupId>
-                    <artifactId>dokka-maven-plugin</artifactId>
-                    <version>1.9.20</version>
-                </plugin>
-                <plugin>
-                    <groupId>com.github.ozsie</groupId>
-                    <artifactId>detekt-maven-plugin</artifactId>
-                    <version>1.23.7</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>3.3.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -252,17 +172,32 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.11.1</version>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.3.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>3.5.2</version>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.11.1</version>
                 </plugin>
             </plugins>
         </pluginManagement>
+
         <plugins>
+            <plugin>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <!--suppress KotlinMavenPluginPhase -->
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <version>${kotlin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <args>
+                        <arg>-Xjsr305=strict</arg>
+                        <!--arg>-Werror</arg-->
+                    </args>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -277,9 +212,6 @@
                         <goals>
                             <goal>analyze-only</goal>
                         </goals>
-                        <configuration>
-                            <ignoreNonCompile>true</ignoreNonCompile>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -326,46 +258,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>3.1.1</version>
-                <configuration>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <useReleaseProfile>true</useReleaseProfile>
-                    <releaseProfiles>release</releaseProfiles>
-                    <tagNameFormat>v@{project.version}</tagNameFormat>
-                    <projectVersionPolicyId>SemVerVersionPolicy</projectVersionPolicyId>
-                    <goals>deploy</goals>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>test-compile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>test-compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <argLine>@{argLine} -javaagent:${org.mockito:mockito-core:jar}</argLine>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
                 <executions>
@@ -382,18 +274,44 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <useReleaseProfile>true</useReleaseProfile>
+                    <releaseProfiles>release</releaseProfiles>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <projectVersionPolicyId>SemVerVersionPolicy</projectVersionPolicyId>
+                    <goals>deploy</goals>
+                </configuration>
             </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <connection>scm:git:git://github.com/kpavlov/finchly.git</connection>
+        <developerConnection>scm:git:ssh://github.com/kpavlov/finchly.git</developerConnection>
+        <url>https://github.com/kpavlov/finchly/tree/main</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/license/mit</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Konstantin Pavlov</name>
+            <url>https://kpavlov.me</url>
+            <roles>
+                <role>author</role>
+                <role>owner</role>
+            </roles>
+        </developer>
+    </developers>
 
     <profiles>
         <profile>
