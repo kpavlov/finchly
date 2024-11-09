@@ -4,6 +4,8 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.VerificationException
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 
+private const val MAX_REQUEST_JOURNAL_ENTRIES = 100
+
 /**
  * Abstract base class for managing a WireMock server instance.
  *
@@ -11,7 +13,8 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration
  *
  * @property mock The WireMock server instance.
  */
-public abstract class BaseWiremock(
+abstract class BaseWiremock(
+    @Suppress("MemberVisibilityCanBePrivate")
     protected val mock: WireMockServer,
 ) {
     /**
@@ -19,25 +22,45 @@ public abstract class BaseWiremock(
      *
      * @param options The configuration settings for initializing the `WireMockServer`.
      */
+    @Suppress("unused")
     constructor(options: WireMockConfiguration) : this(WireMockServer(options))
+
+    /**
+     * Creates an instance of `BaseWiremock` by configuring a `WireMockServer`.
+     *
+     * @param block A lambda function that takes a `WireMockConfiguration` object and configures it.
+     */
+    @Suppress("unused")
+    constructor(block: (WireMockConfiguration) -> Unit) : this(
+        WireMockServer(
+            WireMockConfiguration
+                .options()
+                .dynamicPort()
+                .extensionScanningEnabled(true)
+                .maxRequestJournalEntries(MAX_REQUEST_JOURNAL_ENTRIES)
+                .also(block),
+        ),
+    )
 
     init {
         mock.start()
     }
+
+    protected fun maxRequestJournalEntries(): Int = 100
 
     /**
      * Retrieves the port number on which the WireMock server instance is running.
      *
      * @return the port number on which the WireMock server instance is listening.
      */
-    public fun port(): Int = mock.port()
+    fun port(): Int = mock.port()
 
     /**
      * Removes a specific stub mapping from the WireMock server.
      *
      * @param mapping The stub mapping to remove.
      */
-    public fun resetStub(mapping: com.github.tomakehurst.wiremock.stubbing.StubMapping) {
+    fun resetStub(mapping: com.github.tomakehurst.wiremock.stubbing.StubMapping) {
         mock.removeStub(mapping)
     }
 
@@ -47,7 +70,7 @@ public abstract class BaseWiremock(
      * This function clears all the stub mappings that have been set up in the WireMock server.
      * After calling this method, the server will no longer have any of the previously configured stubs.
      */
-    public fun resetAllStubs() {
+    fun resetAllStubs() {
         mock.resetAll()
     }
 
@@ -60,7 +83,7 @@ public abstract class BaseWiremock(
      *
      * @throws VerificationException if there are unmatched requests or near misses.
      */
-    public fun verifyNoUnmatchedRequests() {
+    fun verifyNoUnmatchedRequests() {
         val unmatchedRequests = mock.findAllUnmatchedRequests()
         if (unmatchedRequests.isEmpty()) {
             return

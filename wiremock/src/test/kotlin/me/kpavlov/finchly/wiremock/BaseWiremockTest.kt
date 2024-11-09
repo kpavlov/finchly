@@ -2,9 +2,7 @@ package me.kpavlov.finchly.wiremock
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import org.junit.jupiter.api.Test
 import java.net.URI
 import java.net.http.HttpClient
@@ -13,11 +11,9 @@ import java.net.http.HttpResponse
 
 class BaseWiremockTest {
     private val mock =
-        object : BaseWiremock(
-            WireMockServer(
-                WireMockConfiguration.wireMockConfig().dynamicPort(),
-            ),
-        ) {
+        object : BaseWiremock({
+            it.disableRequestJournal()
+        }) {
             fun shouldSayHello() {
                 mock.stubFor(
                     WireMock

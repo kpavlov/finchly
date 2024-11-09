@@ -77,11 +77,6 @@
                             <goal>properties</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <goals>
-                            <goal>analyze-only</goal>
-                        </goals>
-                    </execution>
                 </executions>
             </plugin>
             <plugin>
