@@ -14,18 +14,11 @@
     <name>Finchly :: Wiremock</name>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.wiremock/wiremock-standalone -->
         <dependency>
             <groupId>org.wiremock</groupId>
             <artifactId>wiremock-standalone</artifactId>
             <version>${wiremock.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>5.14.2</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

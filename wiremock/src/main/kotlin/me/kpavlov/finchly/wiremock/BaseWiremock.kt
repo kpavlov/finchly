@@ -46,8 +46,6 @@ abstract class BaseWiremock(
         mock.start()
     }
 
-    protected fun maxRequestJournalEntries(): Int = 100
-
     /**
      * Retrieves the port number on which the WireMock server instance is running.
      *

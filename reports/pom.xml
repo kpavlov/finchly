@@ -21,8 +21,15 @@
     <dependencies>
         <dependency>
             <groupId>me.kpavlov.finchly</groupId>
+            <artifactId>finchly</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.kpavlov.finchly</groupId>
             <artifactId>wiremock</artifactId>
             <version>${project.parent.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

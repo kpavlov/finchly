@@ -15,8 +15,8 @@
     <modules>
         <module>bom</module>
         <module>finchly</module>
-        <module>reports</module>
         <module>wiremock</module>
+        <module>reports</module>
     </modules>
 
     <reporting>
@@ -154,8 +154,12 @@
             <version>${assertk.versopn}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-
 
     <build>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
@@ -173,22 +177,6 @@
                         </args>
                         <javaParameters>true</javaParameters>
                     </configuration>
-                    <executions>
-                        <execution>
-                            <id>compile</id>
-                            <phase>compile</phase>
-                            <goals>
-                                <goal>compile</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>test-compile</id>
-                            <phase>test-compile</phase>
-                            <goals>
-                                <goal>test-compile</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -225,11 +213,6 @@
                     <groupId>com.github.ozsie</groupId>
                     <artifactId>detekt-maven-plugin</artifactId>
                     <version>1.23.7</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.jetbrains.kotlinx</groupId>
-                    <artifactId>kover-maven-plugin</artifactId>
-                    <version>0.9.0-RC</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
