@@ -23,10 +23,11 @@
         <argLine></argLine>
         <!-- Dependencies -->
         <assertk.versopn>0.28.1</assertk.versopn>
-        <kotlinx.version>1.9.0</kotlinx.version>
-        <junit.version>5.11.3</junit.version>
         <awaitility.version>4.2.2</awaitility.version>
         <dotenv-kotlin.version>6.4.2</dotenv-kotlin.version>
+        <junit.version>5.11.3</junit.version>
+        <kotlinx.version>1.9.0</kotlinx.version>
+        <slf4j.version>2.0.16</slf4j.version>
         <wiremock.version>3.9.2</wiremock.version>
     </properties>
 
@@ -195,6 +196,19 @@
                 <groupId>org.jetbrains.kotlinx</groupId>
                 <artifactId>kotlinx-coroutines-core-jvm</artifactId>
                 <version>${kotlinx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.cdimascio</groupId>
+                <artifactId>dotenv-kotlin</artifactId>
+                <version>${dotenv-kotlin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-bom</artifactId>
+                <version>${slf4j.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+
             </dependency>
 
             <!-- Test Dependencies -->

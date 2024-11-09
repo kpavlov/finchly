@@ -13,10 +13,11 @@
     <url>https://github.com/kpavlov/finchly</url>
 
     <modules>
-        <module>parent</module>
         <module>bom</module>
-        <module>wiremock</module>
+        <module>finchly</module>
+        <module>parent</module>
         <module>reports</module>
+        <module>wiremock</module>
     </modules>
 
     <build>
