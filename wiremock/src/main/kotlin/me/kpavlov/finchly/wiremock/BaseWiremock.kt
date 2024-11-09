@@ -2,18 +2,25 @@ package me.kpavlov.finchly.wiremock
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.VerificationException
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 
 /**
- * Base class for managing a WireMock server instance.
+ * Abstract base class for managing a WireMock server instance.
  *
- * The server is started upon initialization.
- * Provides utility methods for managing stub mappings and verifying unmatched requests.
+ * Server is started upon initialization
  *
- * @param mock The WireMock server instance to manage.
+ * @property mock The WireMock server instance.
  */
 public abstract class BaseWiremock(
     protected val mock: WireMockServer,
 ) {
+    /**
+     * Constructs a `BaseWiremock` instance with the specified `WireMockConfiguration`.
+     *
+     * @param options The configuration settings for initializing the `WireMockServer`.
+     */
+    constructor(options: WireMockConfiguration) : this(WireMockServer(options))
+
     init {
         mock.start()
     }

@@ -119,9 +119,18 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>properties</id>
                         <goals>
                             <goal>properties</goal>
                         </goals>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>
+                        <configuration>
+                            <ignoreNonCompile>true</ignoreNonCompile>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
