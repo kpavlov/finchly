@@ -6,7 +6,7 @@
 
     <groupId>me.kpavlov.finchly</groupId>
     <artifactId>aggregator</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Project :: Aggregator</name>
     <description>Helper utilities for integration testing</description>

@@ -6,11 +6,12 @@
     <parent>
         <groupId>me.kpavlov.finchly</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.1.0-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>finchly</artifactId>
+    <name>Finchly :: Finchly</name>
 
     <dependencies>
         <dependency>
