@@ -27,7 +27,7 @@
         <kotlin.compiler.jvmTarget>${java.version}</kotlin.compiler.jvmTarget>
         <java.compiler.release>${java.version}</java.compiler.release>
         <!-- Dependencies -->
-        <assertk.versopn>0.28.1</assertk.versopn>
+        <assertk.version>0.28.1</assertk.version>
         <awaitility.version>4.2.2</awaitility.version>
         <dotenv-kotlin.version>6.4.2</dotenv-kotlin.version>
         <junit.version>5.11.3</junit.version>
@@ -78,8 +78,8 @@
             </dependency>
             <dependency>
                 <groupId>com.willowtreeapps.assertk</groupId>
-                <artifactId>assertk-coroutines-jvm</artifactId>
-                <version>0.28.1</version>
+                <artifactId>assertk-jvm</artifactId>
+                <version>${assertk.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -93,25 +93,9 @@
         </dependency>
         <!-- Test Dependencies -->
         <dependency>
-            <groupId>org.awaitility</groupId>
-            <artifactId>awaitility-kotlin</artifactId>
-            <version>${awaitility.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test-junit5</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlinx</groupId>
-            <artifactId>kotlinx-coroutines-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -121,7 +105,7 @@
         </dependency>
         <dependency>
             <groupId>com.willowtreeapps.assertk</groupId>
-            <artifactId>assertk-coroutines-jvm</artifactId>
+            <artifactId>assertk-jvm</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -212,6 +196,9 @@
                         <goals>
                             <goal>analyze-only</goal>
                         </goals>
+                        <configuration>
+                            <ignoreNonCompile>true</ignoreNonCompile>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
