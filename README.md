@@ -17,7 +17,9 @@ Finchly is a modern Kotlin library that simplifies integration testing by provid
 ## Features
 
 - 🚀 Simple and intuitive API
-- 💻 Kotlin-first design
+- 👍 Kotlin-first design
+- 🎪[TestEnvironment](docs/TestEnvironment.md) provides an easy way to manage environment variables between system and `.env` files with fallback values for test environment configurations.
+- 🎭[BaseWiremock](docs/Wiremock.md) provides a Kotlin wrapper for WireMock server with built-in configuration, lifecycle management, and verification for simplified HTTP service mocking in tests.
 
 ## How to build
 

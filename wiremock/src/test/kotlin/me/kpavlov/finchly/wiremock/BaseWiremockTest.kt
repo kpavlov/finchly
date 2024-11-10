@@ -2,6 +2,9 @@ package me.kpavlov.finchly.wiremock
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.messageContains
+import assertk.fail
+import com.github.tomakehurst.wiremock.client.VerificationException
 import com.github.tomakehurst.wiremock.client.WireMock
 import org.junit.jupiter.api.Test
 import java.net.URI
@@ -11,9 +14,7 @@ import java.net.http.HttpResponse
 
 class BaseWiremockTest {
     private val mock =
-        object : BaseWiremock({
-            it.disableRequestJournal()
-        }) {
+        object : BaseWiremock({}) {
             fun shouldSayHello() {
                 mock.stubFor(
                     WireMock
@@ -43,5 +44,27 @@ class BaseWiremockTest {
 
         // then
         assertThat(response.body()).isEqualTo("Hello")
+    }
+
+    @Test
+    fun `Should catch unmatched request`() {
+        // when
+        val request =
+            HttpRequest
+                .newBuilder()
+                .uri(URI.create("http://localhost:$port/bye"))
+                .build()
+
+        client.send(request, HttpResponse.BodyHandlers.ofString())
+
+        // then
+        try {
+            mock.verifyNoUnmatchedRequests()
+            fail("Should catch unmatched request")
+        } catch (e: VerificationException) {
+            println(e)
+            assertThat(e).messageContains("Unmatched requests found")
+            assertThat(e).messageContains("\"url\" : \"/bye\"")
+        }
     }
 }

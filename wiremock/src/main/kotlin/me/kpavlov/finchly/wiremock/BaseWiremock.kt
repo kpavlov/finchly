@@ -86,12 +86,29 @@ abstract class BaseWiremock(
         if (unmatchedRequests.isEmpty()) {
             return
         }
-        println("Unmatched requests: $unmatchedRequests")
         val nearMisses = mock.findNearMissesForAllUnmatchedRequests()
-        if (nearMisses.isEmpty()) {
-            throw VerificationException.forUnmatchedRequests(unmatchedRequests)
-        } else {
-            throw VerificationException.forUnmatchedNearMisses(nearMisses)
+        try {
+            if (nearMisses.isEmpty()) {
+                throw VerificationException.forUnmatchedRequests(unmatchedRequests)
+            } else {
+                throw VerificationException.forUnmatchedNearMisses(nearMisses)
+            }
+        } catch (e: VerificationException) {
+            throw VerificationException(generateDetailedMessage(e))
         }
     }
+
+    private fun generateDetailedMessage(e: VerificationException): String =
+        """
+        Unmatched requests found
+        Mock: ${this.javaClass.simpleName}
+        ${e.message}
+
+        This usually means one of:
+        1. A stub is missing for an expected request
+        2. The request doesn't match the stub exactly (check headers, body, etc.)
+        3. An unexpected request is being made
+
+        Check the stub configuration and actual requests being made.
+        """.trimIndent()
 }
