@@ -489,7 +489,7 @@ class UserTests {
 }
 ```
 
-### 5. Manage Multiple Singleton Mocks
+### 7. Manage Multiple Singleton Mocks
 
 When your application interacts with multiple services, organize related mocks together:
 
@@ -524,7 +524,7 @@ class IntegrationTests {
 }
 ```
 
-### 6. Verify Unmatched Requests
+### 8. Verify Unmatched Requests
 Always verify there are no unmatched requests after each test to:
 
 Detect missing or incorrectly configured stubs
