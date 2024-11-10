@@ -2,8 +2,6 @@ package me.kpavlov.finchly
 
 import io.github.cdimascio.dotenv.dotenv
 import org.slf4j.LoggerFactory
-import java.nio.file.Paths
-import kotlin.io.path.isRegularFile
 
 private val logger = LoggerFactory.getLogger(TestEnvironment.javaClass)
 
@@ -16,50 +14,65 @@ private val logger = LoggerFactory.getLogger(TestEnvironment.javaClass)
  */
 open class AbstractTestEnvironment(
     private val populateSystemProperties: Boolean = true,
+    private val dotEnvFileDir: String = "./",
+    private val dotEnvFileName: String = ".env",
 ) {
     private val dotenv =
         dotenv {
-            val dotenvDir = Paths.get("${System.getProperty("user.dir")}/..")
-            val dotenvFile = dotenvDir.resolve(".env")
-            if (dotenvFile.isRegularFile()) {
-                directory = dotenvDir.normalize().toString()
-                logger.info("Loading .env file from $dotenvFile")
-            }
+            filename = dotEnvFileName
+            directory = dotEnvFileDir
             ignoreIfMissing = true
             ignoreIfMalformed = true
             systemProperties = populateSystemProperties
         }
 
     /**
-     * Retrieves the value of an environment variable from the .env file.
+     * Retrieves the value of an environment variable.
      *
-     * This method uses the Dotenv library to load the environment variable by its name.
+     * This method first attempts to fetch the value from the system environment variables.
+     * If the variable is not present in the system environment,
+     * it then looks for the variable in the `.env` file using the Dotenv library.
      *
      * @param name The name of the environment variable to retrieve.
-     * @return The value of the environment variable as a String, or null if the variable is not found.
+     * @return The value of the environment variable as a String, or the value from the .env file if
+     * the system environment does not contain the variable.
      */
-    open operator fun get(name: String): String = dotenv[name]
+    open operator fun get(name: String): String {
+        val systemEnv = System.getenv(name)
+        if (systemEnv != null) {
+            return systemEnv
+        }
+        return dotenv[name]
+    }
 
     /**
-     * Retrieves the value of an environment variable from the .env file, with an optional default.
+     * Retrieves the value of an environment variable, or falls back to a default value if not found.
      *
-     * This method looks for an environment variable with the specified name. If found, it returns
-     * its value. If not found and a default value is provided, it returns the default value.
+     * This method first checks the system environment variables and returns the value if it exists.
+     * If the variable is not found in the system environment, it looks for the variable in the
+     * `.env` file via the Dotenv library.
      *
      * @param name The name of the environment variable to retrieve.
-     * @param defaultValue An optional default value to return if the environment variable is not found.
-     * @return The value of the environment variable, or the default value if provided,
-     * or null if the variable is not found and no default is provided.
+     * @param defaultValue The default value to return if the environment variable is not found.
+     * Defaults to `null`.
+     * @return The value of the environment variable as a String,
+     * or the default value if the variable is not found.
      */
     open fun get(
         name: String,
         defaultValue: String? = null,
-    ): String? =
-        if (defaultValue != null) {
+    ): String? {
+        val systemEnv = System.getenv(name)
+        if (systemEnv != null) {
+            return systemEnv
+        }
+
+        return if (defaultValue != null) {
             dotenv.get(name, defaultValue)
         } else {
             dotenv[name]
         }
+    }
 }
 
 object TestEnvironment : AbstractTestEnvironment()
