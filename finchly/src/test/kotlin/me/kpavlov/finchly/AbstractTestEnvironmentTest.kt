@@ -2,11 +2,14 @@ package me.kpavlov.finchly
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isNull
 import org.junit.jupiter.api.Test
 
-internal class TestEnvironmentTest {
-    private val env = TestEnvironment
+internal class AbstractTestEnvironmentTest {
+    private val env =
+        AbstractTestEnvironment(
+            dotEnvFileName = "test.env",
+            dotEnvFileDir = "src/test/data",
+        )
 
     @Test
     fun `Should read env variables`() {
@@ -14,9 +17,14 @@ internal class TestEnvironmentTest {
     }
 
     @Test
+    fun `Should prefer env variable`() {
+        assertThat(env.get("HOME", "baz")).isEqualTo(System.getProperty("user.home"))
+    }
+
+    @Test
     fun `Should read value from dotEnv file`() {
-        assertThat(env["FOO"]).isNull()
-        assertThat(env.get("FOO", defaultValue = null)).isNull()
+        assertThat(env["FOO"]).isEqualTo("bar")
+        assertThat(env.get("FOO", defaultValue = null)).isEqualTo("bar")
     }
 
     @Test

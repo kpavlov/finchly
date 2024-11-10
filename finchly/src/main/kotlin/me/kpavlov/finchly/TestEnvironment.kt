@@ -34,7 +34,7 @@ open class AbstractTestEnvironment(
      * @return The value of the environment variable as a String, or the value from the .env file if
      * the system environment does not contain the variable.
      */
-    open operator fun get(name: String): String {
+    open operator fun get(name: String): String? {
         val systemEnv = System.getenv(name)
         if (systemEnv != null) {
             return systemEnv
