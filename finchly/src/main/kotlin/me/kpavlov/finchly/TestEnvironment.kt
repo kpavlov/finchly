@@ -1,9 +1,6 @@
 package me.kpavlov.finchly
 
 import io.github.cdimascio.dotenv.dotenv
-import org.slf4j.LoggerFactory
-
-private val logger = LoggerFactory.getLogger(TestEnvironment.javaClass)
 
 /**
  * Represents an abstract environment for testing purposes that can load environment variables
