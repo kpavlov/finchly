@@ -3,13 +3,13 @@ package me.kpavlov.finchly
 import io.github.cdimascio.dotenv.dotenv
 
 /**
- * Represents an abstract environment for testing purposes that can load environment variables
+ * Represents a base environment for testing purposes that can load environment variables
  * from a .env file.
  *
  * @property populateSystemProperties Determines whether to populate system properties
  * with the loaded environment variables.
  */
-open class AbstractTestEnvironment(
+open class BaseTestEnvironment(
     private val populateSystemProperties: Boolean = true,
     private val dotEnvFileDir: String = "./",
     private val dotEnvFileName: String = ".env",
@@ -72,4 +72,4 @@ open class AbstractTestEnvironment(
     }
 }
 
-object TestEnvironment : AbstractTestEnvironment()
+object TestEnvironment : BaseTestEnvironment()

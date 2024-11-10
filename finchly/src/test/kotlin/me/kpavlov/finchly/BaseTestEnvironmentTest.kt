@@ -4,13 +4,13 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.jupiter.api.Test
 
-internal class AbstractTestEnvironmentTest {
-    private val env =
-        AbstractTestEnvironment(
-            dotEnvFileName = "test.env",
-            dotEnvFileDir = "src/test/data",
-        )
+private val env =
+    BaseTestEnvironment(
+        dotEnvFileName = "test.env",
+        dotEnvFileDir = "src/test/data",
+    )
 
+internal class BaseTestEnvironmentTest {
     @Test
     fun `Should read env variables`() {
         assertThat(env["HOME"]).isEqualTo(System.getProperty("user.home"))
