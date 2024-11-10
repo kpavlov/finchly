@@ -10,12 +10,37 @@
     <description>Helper utilities for integration testing</description>
     <url>https://github.com/kpavlov/finchly</url>
 
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/license/mit</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Konstantin Pavlov</name>
+            <url>https://kpavlov.me</url>
+            <roles>
+                <role>author</role>
+                <role>owner</role>
+            </roles>
+        </developer>
+    </developers>
+
     <modules>
         <module>bom</module>
         <module>finchly</module>
         <module>wiremock</module>
         <module>reports</module>
     </modules>
+
+    <scm>
+        <connection>scm:git:git://github.com/kpavlov/finchly.git</connection>
+        <developerConnection>scm:git:ssh://github.com/kpavlov/finchly.git</developerConnection>
+        <url>https://github.com/kpavlov/finchly/tree/main</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -93,7 +118,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -114,10 +138,12 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.5.2</version>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>3.5.2</version>
                 </plugin>
@@ -201,6 +227,7 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
                     <execution>
@@ -272,31 +299,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <scm>
-        <connection>scm:git:git://github.com/kpavlov/finchly.git</connection>
-        <developerConnection>scm:git:ssh://github.com/kpavlov/finchly.git</developerConnection>
-        <url>https://github.com/kpavlov/finchly/tree/main</url>
-        <tag>HEAD</tag>
-    </scm>
-
-    <licenses>
-        <license>
-            <name>MIT License</name>
-            <url>https://opensource.org/license/mit</url>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <name>Konstantin Pavlov</name>
-            <url>https://kpavlov.me</url>
-            <roles>
-                <role>author</role>
-                <role>owner</role>
-            </roles>
-        </developer>
-    </developers>
 
     <profiles>
         <profile>
