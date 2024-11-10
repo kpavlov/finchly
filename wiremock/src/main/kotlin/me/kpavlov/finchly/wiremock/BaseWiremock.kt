@@ -81,6 +81,7 @@ abstract class BaseWiremock(
      *
      * @throws VerificationException if there are unmatched requests or near misses.
      */
+    @Suppress("ThrowsCount")
     fun verifyNoUnmatchedRequests() {
         val unmatchedRequests = mock.findAllUnmatchedRequests()
         if (unmatchedRequests.isEmpty()) {
