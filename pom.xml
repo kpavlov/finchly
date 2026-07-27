@@ -4,7 +4,7 @@
 
     <groupId>me.kpavlov.finchly</groupId>
     <artifactId>root</artifactId>
-    <version>0.1.2-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Finchly</name>
     <description>Helper utilities for integration testing</description>
@@ -29,8 +29,11 @@
     </developers>
 
     <modules>
-        <module>bom</module>
-        <module>finchly</module>
+        <module>finchly-bom</module>
+        <module>finchly-kotlin</module>
+        <module>finchly-core</module>
+        <module>finchly-kafka</module>
+        <module>finchly-rabbitmq</module>
         <module>wiremock</module>
         <module>reports</module>
     </modules>
@@ -50,13 +53,17 @@
         <kotlin.compiler.jvmTarget>${java.version}</kotlin.compiler.jvmTarget>
         <java.compiler.release>${java.version}</java.compiler.release>
         <!-- Dependencies -->
+        <amqp-client.version>5.21.0</amqp-client.version>
+        <assertj.version>3.27.7</assertj.version>
         <assertk.version>0.28.1</assertk.version>
-        <awaitility.version>4.2.2</awaitility.version>
+        <awaitility.version>4.3.0</awaitility.version>
         <dotenv-kotlin.version>6.5.1</dotenv-kotlin.version>
         <junit.version>6.1.2</junit.version>
+        <kafka-clients.version>4.3.1</kafka-clients.version>
         <kotlinx.version>1.11.0</kotlinx.version>
         <mockito.version>5.14.2</mockito.version>
         <slf4j.version>2.0.18</slf4j.version>
+        <testcontainers.version>2.0.5</testcontainers.version>
         <wiremock.version>3.13.2</wiremock.version>
     </properties>
 
@@ -105,6 +112,40 @@
                 <version>${assertk.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${assertj.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.awaitility</groupId>
+                <artifactId>awaitility</artifactId>
+                <version>${awaitility.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka-clients.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rabbitmq</groupId>
+                <artifactId>amqp-client</artifactId>
+                <version>${amqp-client.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -133,8 +174,6 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>src/main/kotlin</sourceDirectory>
-        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
         <pluginManagement>
             <plugins>
                 <plugin>
