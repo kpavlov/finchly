@@ -8,16 +8,25 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>wiremock</artifactId>
-    <name>Finchly :: Wiremock</name>
+    <artifactId>finchly-kotlin</artifactId>
+    <name>Finchly :: Kotlin</name>
 
     <dependencies>
         <dependency>
-            <groupId>org.wiremock</groupId>
-            <artifactId>wiremock-standalone</artifactId>
-            <version>${wiremock.version}</version>
-            <scope>compile</scope>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>dotenv-kotlin</artifactId>
+        </dependency>
+        <!-- Test Dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
+    </build>
 
 </project>
