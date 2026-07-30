@@ -35,7 +35,6 @@
         <module>finchly-kafka</module>
         <module>finchly-rabbitmq</module>
         <module>wiremock</module>
-        <module>reports</module>
     </modules>
 
     <scm>
@@ -340,6 +339,15 @@
     </build>
 
     <profiles>
+        <profile>
+            <id>tests</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>reports</module>
+            </modules>
+        </profile>
         <profile>
             <id>release</id>
             <build>
