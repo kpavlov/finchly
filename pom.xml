@@ -4,7 +4,7 @@
 
     <groupId>me.kpavlov.finchly</groupId>
     <artifactId>root</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.2.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Finchly</name>
     <description>Helper utilities for integration testing</description>
@@ -149,11 +149,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <!--suppress KotlinMavenPluginPhase -->
-            <artifactId>kotlin-stdlib</artifactId>
-        </dependency>
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

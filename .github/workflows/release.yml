@@ -15,7 +15,7 @@ permissions:
   contents: write
 
 env:
-  JAVA_VERSION: 23
+  JAVA_VERSION: 21
 
 jobs:
   publish:
