@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  JAVA_VERSION: 23
+  JAVA_VERSION: 21
 
 jobs:
   build:
@@ -41,7 +41,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: target/reports
+          path: target/reports/apidocs
 
   deploy:
     needs: build
