@@ -8,6 +8,7 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.DeleteMessageRequest;
 import software.amazon.awssdk.services.sqs.model.Message;
 import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest;
+import software.amazon.awssdk.services.sqs.model.ReceiveMessageResponse;
 
 /**
  * {@link QueueSubscriber} for an SNS topic whose messages are delivered to an SQS subscription.
@@ -71,17 +72,32 @@ public final class SnsQueueSubscriber<T> extends QueueSubscriber<T> {
 
     private void pollLoop() {
         while (running) {
-            final var response = client.receiveMessage(ReceiveMessageRequest.builder()
+            final var request = ReceiveMessageRequest.builder()
                     .queueUrl(queueUrl)
                     .maxNumberOfMessages(MAX_MESSAGES)
                     .waitTimeSeconds(WAIT_TIME_SECONDS)
-                    .build());
+                    .build();
+            final var response = receive(request);
+            if (response == null) {
+                return;
+            }
             for (final Message message : response.messages()) {
                 if (!running) {
                     return;
                 }
                 consume(message);
             }
+        }
+    }
+
+    private ReceiveMessageResponse receive(final ReceiveMessageRequest request) {
+        try {
+            return client.receiveMessage(request);
+        } catch (final RuntimeException e) {
+            if (!running) {
+                return null;
+            }
+            throw e;
         }
     }
 
