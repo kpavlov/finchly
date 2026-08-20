@@ -3,7 +3,7 @@
 ## Overview
 
 The queue testing utilities help you write integration tests against message-driven systems (Kafka,
-RabbitMQ, or any other broker) without hand-rolling a thread-safe buffer and a polling loop in every
+    RabbitMQ, AWS SNS, or any other broker) without hand-rolling a thread-safe buffer and a polling loop in every
 test suite. They're split across three modules:
 
 - **`finchly-core`** — transport-agnostic abstractions:
@@ -14,6 +14,8 @@ test suite. They're split across three modules:
   - `QueuePublisher<T>` — abstract base for a broker-specific sender.
 - **`finchly-kafka`** — `KafkaQueueSubscriber`/`KafkaQueuePublisher`, backed by `kafka-clients`.
 - **`finchly-rabbitmq`** — `RabbitMqQueueSubscriber`/`RabbitMqQueuePublisher`, backed by `amqp-client`.
+- **`finchly-aws-sns`** — `SnsQueuePublisher` backed by the AWS SNS client and
+  `SnsQueueSubscriber` backed by an SQS topic subscription.
 
 A typical test wires a real subscriber to a real broker (via Testcontainers), publishes messages, and
 asserts on what the aggregator received — exercising the actual wire format and delivery semantics
@@ -167,6 +169,36 @@ subscriber.stop(); // cancels the consumer
 
 The integration test (`finchly-rabbitmq/src/test/java/.../RabbitMqQueueIT.java`) runs this against
 Testcontainers' [`RabbitMQContainer`](https://testcontainers.com/modules/rabbitmq/).
+
+## AWS SNS (`finchly-aws-sns`)
+
+```xml
+<dependency>
+    <groupId>me.kpavlov.finchly</groupId>
+    <artifactId>finchly-aws-sns</artifactId>
+</dependency>
+```
+
+SNS does not expose a receive API, so `SnsQueueSubscriber<T>` consumes from an SQS queue subscribed
+to the topic. Configure that subscription with `RawMessageDelivery=true`; the subscriber can then
+deserialize each SQS body directly and deletes it only after successful delivery to the aggregator:
+
+```java
+SnsQueuePublisher<String> publisher = new SnsQueuePublisher<>(snsClient, topicArn, value -> value);
+
+MessageAggregator<String> aggregator = new MessageAggregator<>();
+SnsQueueSubscriber<String> subscriber =
+        new SnsQueueSubscriber<>(sqsClient, queueUrl, value -> value, aggregator);
+subscriber.start();
+
+publisher.publish("order-created");
+String received = aggregator.awaitMessage(value -> value.equals("order-created"));
+
+subscriber.stop();
+```
+
+The integration test (`finchly-aws-sns/src/test/java/.../SnsQueueIT.java`) exercises the complete
+SNS-to-SQS path against LocalStack.
 
 ## Best Practices
 

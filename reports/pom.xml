@@ -43,6 +43,12 @@
         </dependency>
         <dependency>
             <groupId>me.kpavlov.finchly</groupId>
+            <artifactId>finchly-aws-sns</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.kpavlov.finchly</groupId>
             <artifactId>wiremock</artifactId>
             <version>${project.parent.version}</version>
             <scope>provided</scope>

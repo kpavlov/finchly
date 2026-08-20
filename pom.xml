@@ -34,6 +34,7 @@
         <module>finchly-core</module>
         <module>finchly-kafka</module>
         <module>finchly-rabbitmq</module>
+        <module>finchly-aws-sns</module>
         <module>wiremock</module>
     </modules>
 
@@ -53,6 +54,7 @@
         <java.compiler.release>${java.version}</java.compiler.release>
         <!-- Dependencies -->
         <amqp-client.version>5.34.0</amqp-client.version>
+        <aws-sdk.version>2.54.0</aws-sdk.version>
         <assertj.version>3.27.7</assertj.version>
         <assertk.version>0.28.1</assertk.version>
         <awaitility.version>4.3.0</awaitility.version>
@@ -68,6 +70,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>${aws-sdk.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-bom</artifactId>
