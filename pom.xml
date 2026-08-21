@@ -52,7 +52,7 @@
         <kotlin.compiler.jvmTarget>${java.version}</kotlin.compiler.jvmTarget>
         <java.compiler.release>${java.version}</java.compiler.release>
         <!-- Dependencies -->
-        <amqp-client.version>5.34.0</amqp-client.version>
+        <amqp-client.version>5.35.0</amqp-client.version>
         <assertj.version>3.27.7</assertj.version>
         <assertk.version>0.28.1</assertk.version>
         <awaitility.version>4.3.0</awaitility.version>
