@@ -8,9 +8,9 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>finchly-aws-sns</artifactId>
-    <name>Finchly :: AWS SNS</name>
-    <description>AWS SNS publisher implementation for the finchly-core queue testing abstractions</description>
+    <artifactId>finchly-aws-sqs</artifactId>
+    <name>Finchly :: AWS SQS</name>
+    <description>AWS SQS publisher and subscriber implementations for the finchly-core queue testing abstractions</description>
 
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
-            <artifactId>sns</artifactId>
+            <artifactId>sqs</artifactId>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>

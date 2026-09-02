@@ -1,4 +1,4 @@
-package me.kpavlov.finchly.awssns;
+package me.kpavlov.finchly.awssqs;
 
 import java.time.Duration;
 import java.util.List;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class SnsQueueSubscriberTest {
+class SqsQueueSubscriberTest {
 
     @Test
     void shouldDeliverAndDeleteSuccessfullyDeserializedMessage() {
@@ -30,7 +30,7 @@ class SnsQueueSubscriberTest {
                 .thenReturn(response("hello", "receipt"))
                 .thenReturn(emptyResponse());
         final var aggregator = new MessageAggregator<String>();
-        final var subscriber = new SnsQueueSubscriber<>(client, "queue-url", value -> value, aggregator);
+        final var subscriber = new SqsQueueSubscriber<>(client, "queue-url", value -> value, aggregator);
 
         subscriber.start();
         assertThat(aggregator.awaitMessage(Duration.ofSeconds(2), value -> value.equals("hello"))).isEqualTo("hello");
@@ -46,7 +46,7 @@ class SnsQueueSubscriberTest {
         when(client.receiveMessage(any(ReceiveMessageRequest.class)))
                 .thenReturn(response("bad", "receipt"))
                 .thenReturn(emptyResponse());
-        final var subscriber = new SnsQueueSubscriber<String>(client, "queue-url", value -> {
+        final var subscriber = new SqsQueueSubscriber<String>(client, "queue-url", value -> {
             throw new IllegalArgumentException("boom");
         }, new MessageAggregator<>());
 
@@ -59,7 +59,7 @@ class SnsQueueSubscriberTest {
 
     @Test
     void stopBeforeStartShouldBeNoOp() {
-        final var subscriber = new SnsQueueSubscriber<>(
+        final var subscriber = new SqsQueueSubscriber<>(
                 mock(SqsClient.class), "queue-url", value -> value, new MessageAggregator<String>());
 
         assertThatCode(subscriber::stop).doesNotThrowAnyException();

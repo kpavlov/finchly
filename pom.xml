@@ -35,6 +35,7 @@
         <module>finchly-kafka</module>
         <module>finchly-rabbitmq</module>
         <module>finchly-aws-sns</module>
+        <module>finchly-aws-sqs</module>
         <module>wiremock</module>
     </modules>
 

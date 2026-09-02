@@ -1,5 +1,6 @@
-package me.kpavlov.finchly.awssns;
+package me.kpavlov.finchly.awssqs;
 
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
 
 import me.kpavlov.finchly.queue.MessageAggregator;
@@ -11,13 +12,11 @@ import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest;
 import software.amazon.awssdk.services.sqs.model.ReceiveMessageResponse;
 
 /**
- * {@link QueueSubscriber} for an SNS topic whose messages are delivered to an SQS subscription.
- * The SNS subscription must have {@code RawMessageDelivery} enabled so each SQS message body is the
- * original published value rather than an SNS JSON envelope.
+ * {@link QueueSubscriber} for an SQS queue.
  *
  * @param <T> the deserialized message type
  */
-public final class SnsQueueSubscriber<T> extends QueueSubscriber<T> {
+public final class SqsQueueSubscriber<T> extends QueueSubscriber<T> {
 
     private static final int MAX_MESSAGES = 10;
     private static final int WAIT_TIME_SECONDS = 1;
@@ -25,11 +24,11 @@ public final class SnsQueueSubscriber<T> extends QueueSubscriber<T> {
     private final SqsClient client;
     private final String queueUrl;
     private final Function<String, T> deserializer;
-    private final Object lifecycleLock = new Object();
+    private final ReentrantReadWriteLock lifecycleLock = new ReentrantReadWriteLock();
     private volatile boolean running;
     private Thread pollThread;
 
-    public SnsQueueSubscriber(
+    public SqsQueueSubscriber(
             final SqsClient client,
             final String queueUrl,
             final Function<String, T> deserializer,
@@ -43,20 +42,24 @@ public final class SnsQueueSubscriber<T> extends QueueSubscriber<T> {
     /** Starts a background SQS long-poll loop. A second call while running is a no-op. */
     @Override
     public void start() {
-        synchronized (lifecycleLock) {
+        lifecycleLock.writeLock().lock();
+        try {
             if (running) {
                 return;
             }
             running = true;
-            pollThread = new Thread(this::pollLoop, "sns-queue-subscriber");
+            pollThread = new Thread(this::pollLoop, "sqs-queue-subscriber");
             pollThread.start();
+        } finally {
+            lifecycleLock.writeLock().unlock();
         }
     }
 
     /** Stops the poll loop. A no-op if the subscriber is not running. */
     @Override
     public void stop() {
-        synchronized (lifecycleLock) {
+        lifecycleLock.writeLock().lock();
+        try {
             if (!running) {
                 return;
             }
@@ -67,6 +70,8 @@ public final class SnsQueueSubscriber<T> extends QueueSubscriber<T> {
             } catch (final InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
+        } finally {
+            lifecycleLock.writeLock().unlock();
         }
     }
 
